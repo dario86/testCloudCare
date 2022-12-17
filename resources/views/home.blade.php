@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laravel Pagination using Ajax</title>
+    <title>Test Cloud Care</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -19,10 +19,10 @@
         <div class="table-responsive">
         </div>
     </div>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item"><a class="page-link page-prev" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link page-next" href="#">Next</a></li>
+    <nav>
+        <ul class="pagination pull-right">
+            <li class="page-item"><a class="page-link page-prev" href="#">{!! __('pagination.previous') !!}</a></li>
+            <li class="page-item"><a class="page-link page-next" href="#">{!! __('pagination.next') !!}</a></li>
         </ul>
     </nav>
 
@@ -36,20 +36,15 @@
         var page = 1;
         var per_page = 10;
 
-        $(document).on('click', '.page-prev', function(event){
-            page <= 1 ? page : page--;
-            fetch_data(page);
-        });
-
-        $(document).on('click', '.page-next', function(event){
-            page++;
-            fetch_data(page);
-        });
-
         function fetch_data(page)
         {
             $.ajax({
-                url:"/api/list?token="+'{{ $token }}'+"&page="+page+"&perPage="+per_page,
+                url:"/api/list",
+                data: {
+                    token: '{{ $token }}',
+                    page: page,
+                    perPage: per_page,
+                },
                 success:function(data)
                 {
                     if (data.success) {
@@ -58,9 +53,25 @@
                     else {
                         alert('error occurred');
                     }
+                },
+                error: function(error) {
+                    alert('error occurred');
                 }
             });
         }
+
+        $(document).on('click', '.page-link', function(event){
+
+            if($(event.target).hasClass('page-prev')) {
+                page <= 1 ? page : page--;
+            }
+
+            if($(event.target).hasClass('page-next')) {
+                page++;
+            }
+
+            fetch_data(page);
+        });
 
         fetch_data(1);
 
