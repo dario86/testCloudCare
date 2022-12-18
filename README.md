@@ -1,4 +1,5 @@
-﻿##Test Php Laravel
+## Test Php Laravel
+
 Implementare una web application laravel* che dopo il login di utente tramite username e
 password fornisca un token.
 Non è necessario la fase di registrazione dell'utente con invio mail, puoi immaginare di
